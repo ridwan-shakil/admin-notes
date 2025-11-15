@@ -9,6 +9,7 @@
  * - save_checklist
  * - save_color
  * - toggle_minimize
+ * - save_order (new)
  *
  * All endpoints expect a valid nonce and capability checks.
  */
@@ -26,6 +27,9 @@ class Admin_Notes_Ajax {
 		add_action( 'wp_ajax_admin_notes_save_checklist', array( $this, 'ajax_save_checklist' ) );
 		add_action( 'wp_ajax_admin_notes_save_color', array( $this, 'ajax_save_color' ) );
 		add_action( 'wp_ajax_admin_notes_toggle_minimize', array( $this, 'ajax_toggle_minimize' ) );
+
+		// New: save notes order
+		add_action( 'wp_ajax_admin_notes_save_order', array( $this, 'ajax_save_order' ) );
 	}
 
 	/**
@@ -197,6 +201,44 @@ class Admin_Notes_Ajax {
 		}
 
 		update_user_meta( $user_id, 'admin_notes_minimized', array_values( $meta ) );
+
+		wp_send_json_success();
+	}
+
+	/**
+	 * Save order of notes (expects 'order' => array of post IDs in desired order).
+	 */
+	public function ajax_save_order() {
+		$this->verify_request();
+
+		$order = isset( $_POST['order'] ) ? wp_unslash( $_POST['order'] ) : '';
+		// order expected as JSON array or comma-separated string
+		$ids = array();
+
+		if ( is_string( $order ) && '' !== $order ) {
+			// try JSON decode first
+			$decoded = json_decode( $order );
+			if ( is_array( $decoded ) ) {
+				$ids = array_map( 'intval', $decoded );
+			} else {
+				// fallback to comma separated
+				$parts = explode( ',', $order );
+				$ids   = array_map( 'intval', $parts );
+			}
+		}
+
+		if ( empty( $ids ) || ! is_array( $ids ) ) {
+			wp_send_json_error( array( 'message' => __( 'Invalid order data', 'admin-notes' ) ) );
+		}
+
+		// Update order meta for each id; smaller index = higher priority (start at 1)
+		$index = 1;
+		foreach ( $ids as $post_id ) {
+			if ( $post_id && 'admin_note' === get_post_type( $post_id ) ) {
+				update_post_meta( $post_id, '_admin_notes_order', $index );
+				++$index;
+			}
+		}
 
 		wp_send_json_success();
 	}

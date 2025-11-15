@@ -114,7 +114,7 @@ class Admin_Notes_Admin {
 		$meta    = get_post_meta( $post_id );
 		$color   = isset( $meta['_admin_notes_color'][0] ) ? esc_attr( $meta['_admin_notes_color'][0] ) : '#fff9c4';
 		$check   = isset( $meta['_admin_notes_checklist'][0] ) ? wp_unslash( $meta['_admin_notes_checklist'][0] ) : '[]';
-		$check   = wp_json_decode( $check );
+		$check   = json_decode( $check );
 		if ( ! is_array( $check ) ) {
 			$check = array();
 		}

@@ -1,5 +1,6 @@
-/* Admin Notes minimal JS (vanilla) */
-/* eslint-disable no-console */
+/* Admin Notes minimal JS (vanilla)
+   Phase 6 & 7: checklist reordering and note drag/drop ordering
+*/
 ( function () {
 	'use strict';
 
@@ -59,6 +60,8 @@
 						board.appendChild(node);
 					}
 					bindCard(node);
+					// update board drag bindings
+					enableBoardDrag();
 				} else {
 					alert('Unable to add note');
 				}
@@ -104,6 +107,8 @@
 				}, function (res) {
 					if (res && res.success) {
 						card.parentNode.removeChild(card);
+						// After removal update order
+						saveBoardOrder();
 					} else {
 						alert('Unable to delete note');
 					}
@@ -146,6 +151,7 @@
 					var li = document.createElement('li');
 					li.className = 'admin-note-check-item';
 					li.setAttribute('data-item-id', itemId);
+					li.setAttribute('draggable', 'true');
 					li.innerHTML = '<span class="check-drag">⋮</span><label><input type="checkbox" class="check-toggle" /><span class="check-text"></span></label><button class="check-remove">✕</button>';
 					li.querySelector('.check-text').textContent = text;
 					checklist.appendChild(li);
@@ -161,8 +167,12 @@
 		// Bind existing checklist items
 		var items = qsa('.admin-note-check-item', card);
 		items.forEach(function (it) {
+			it.setAttribute('draggable', 'true');
 			bindCheckItem(it, card);
 		});
+
+		// Checklist drag/drop handlers (using HTML5 DnD)
+		enableChecklistDnD(checklist, card);
 
 		// Color swatches & picker
 		var swatches = qsa('.admin-note-color-swatch', card);
@@ -214,27 +224,29 @@
 		}
 
 		// Edit label on click -> simple inline edit
-		textSpan.addEventListener('click', function () {
-			var current = textSpan.textContent;
-			var input = document.createElement('input');
-			input.type = 'text';
-			input.value = current;
-			input.style.width = '100%';
-			textSpan.replaceWith(input);
-			input.focus();
-			input.addEventListener('blur', function () {
-				var newVal = input.value.trim();
-				if (!newVal) { newVal = current; }
-				textSpan.textContent = newVal;
-				input.replaceWith(textSpan);
-				saveChecklistForNote(card);
+		if (textSpan) {
+			textSpan.addEventListener('click', function () {
+				var current = textSpan.textContent;
+				var input = document.createElement('input');
+				input.type = 'text';
+				input.value = current;
+				input.style.width = '100%';
+				textSpan.replaceWith(input);
+				input.focus();
+				input.addEventListener('blur', function () {
+					var newVal = input.value.trim();
+					if (!newVal) { newVal = current; }
+					textSpan.textContent = newVal;
+					input.replaceWith(textSpan);
+					saveChecklistForNote(card);
+				});
+				input.addEventListener('keydown', function (e) {
+					if (e.key === 'Enter') {
+						input.blur();
+					}
+				});
 			});
-			input.addEventListener('keydown', function (e) {
-				if (e.key === 'Enter') {
-					input.blur();
-				}
-			});
-		});
+		}
 	}
 
 	// Collect checklist items and POST to server
@@ -265,12 +277,151 @@
 		}, function () {});
 	}
 
+	// ---------------------------
+	// Board drag & drop (notes)
+	// ---------------------------
+	var boardDragSrc = null;
+
+	function enableBoardDrag() {
+		var board = qs('#admin-notes-board');
+		if (!board) { return; }
+		// ensure each card is draggable and has listeners
+		var cards = qsa('.admin-note-card', board);
+		cards.forEach(function (card) {
+			card.setAttribute('draggable', 'true');
+
+			// skip if handlers already set (prevent duplicate)
+			if (card._adminNotesDnD) { return; }
+			card._adminNotesDnD = true;
+
+			card.addEventListener('dragstart', function (e) {
+				boardDragSrc = card;
+				card.classList.add('dragging');
+				try {
+					e.dataTransfer.effectAllowed = 'move';
+					// required for Firefox
+					e.dataTransfer.setData('text/plain', card.getAttribute('data-note-id'));
+				} catch (err) {
+					// ignore
+				}
+			});
+
+			card.addEventListener('dragover', function (e) {
+				e.preventDefault();
+				e.dataTransfer.dropEffect = 'move';
+				// visually indicate position
+				card.classList.add('drag-over');
+			});
+
+			card.addEventListener('dragleave', function (e) {
+				card.classList.remove('drag-over');
+			});
+
+			card.addEventListener('drop', function (e) {
+				e.preventDefault();
+				card.classList.remove('drag-over');
+				if (!boardDragSrc || boardDragSrc === card) {
+					boardDragSrc = null;
+					if (boardDragSrc) boardDragSrc.classList.remove('dragging');
+					return;
+				}
+				// Insert before dropped-on card
+				board.insertBefore(boardDragSrc, card);
+				// Clean up class
+				if (boardDragSrc) boardDragSrc.classList.remove('dragging');
+				boardDragSrc = null;
+				// Save new order
+				saveBoardOrder();
+			});
+
+			card.addEventListener('dragend', function () {
+				card.classList.remove('dragging');
+				// remove any drag-over classes left behind
+				var others = qsa('.drag-over', board);
+				others.forEach(function (o) { o.classList.remove('drag-over'); });
+			});
+		});
+	}
+
+	// Save board order: collect note IDs in DOM order and POST
+	function saveBoardOrder() {
+		var board = qs('#admin-notes-board');
+		if (!board) { return; }
+		var cards = qsa('.admin-note-card', board);
+		var ids = cards.map(function (c) {
+			return parseInt(c.getAttribute('data-note-id'), 10);
+		}).filter(function (n) { return !isNaN(n); });
+
+		ajaxPost({
+			action: 'admin_notes_save_order',
+			order: JSON.stringify(ids),
+			nonce: AdminNotes.nonce
+		}, function () {});
+	}
+
+	// ---------------------------
+	// Checklist drag & drop
+	// ---------------------------
+	function enableChecklistDnD(listEl, card) {
+		if (!listEl) { return; }
+
+		var dragSrcEl = null;
+
+		listEl.addEventListener('dragstart', function (e) {
+			var li = e.target.closest('.admin-note-check-item');
+			if (!li) { return; }
+			dragSrcEl = li;
+			li.classList.add('dragging');
+			try {
+				e.dataTransfer.effectAllowed = 'move';
+				e.dataTransfer.setData('text/plain', li.getAttribute('data-item-id'));
+			} catch (err) {}
+		});
+
+		listEl.addEventListener('dragover', function (e) {
+			e.preventDefault();
+			var target = e.target.closest('.admin-note-check-item');
+			if (target && target !== dragSrcEl) {
+				target.classList.add('drag-over');
+			}
+		});
+
+		listEl.addEventListener('dragleave', function (e) {
+			var target = e.target.closest('.admin-note-check-item');
+			if (target) target.classList.remove('drag-over');
+		});
+
+		listEl.addEventListener('drop', function (e) {
+			e.preventDefault();
+			var target = e.target.closest('.admin-note-check-item');
+			if (!target || !dragSrcEl) { return; }
+			target.classList.remove('drag-over');
+			if (dragSrcEl === target) { return; }
+
+			// Insert dragSrc before target
+			listEl.insertBefore(dragSrcEl, target);
+			dragSrcEl.classList.remove('dragging');
+			// save checklist
+			saveChecklistForNote(card);
+		});
+
+		listEl.addEventListener('dragend', function (e) {
+			if (dragSrcEl) {
+				dragSrcEl.classList.remove('dragging');
+				dragSrcEl = null;
+			}
+			var items = qsa('.admin-note-check-item', listEl);
+			items.forEach(function (it) { it.classList.remove('drag-over'); });
+		});
+	}
+
 	// Initialize all existing cards
 	function initBoard() {
 		var cards = qsa('.admin-note-card');
 		cards.forEach(function (c) {
 			bindCard(c);
 		});
+		enableBoardDrag();
 	}
 
 	// Kick off
