@@ -65,6 +65,7 @@ jobs:
       # 6. Auto-fix PHPCS (safe fixes only)
       # --------------------------------------------------
       - name: Auto-fix PHPCS formatting
+        continue-on-error: true
         run: |
           if [ -f vendor/bin/phpcbf ]; then
             vendor/bin/phpcbf \
