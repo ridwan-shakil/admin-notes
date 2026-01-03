@@ -1,0 +1,62 @@
+name: WordPress Plugin Quality Checks
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  quality-checks:
+    name: PHPCS & WP Standards
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1'
+          tools: composer
+          coverage: none
+
+      - name: Validate PHP syntax
+        run: |
+          find . -type f -name "*.php" ! -path "./vendor/*" -print0 | xargs -0 -n1 php -l
+
+      - name: Install PHPCS + WP Standards
+        run: |
+          composer global require \
+            "squizlabs/php_codesniffer=*"
+          composer global require \
+            "wp-coding-standards/wpcs"
+          composer global require \
+            "phpcompatibility/php-compatibility"
+          composer global require \
+            "dealerdirect/phpcodesniffer-composer-installer"
+
+      - name: Configure PHPCS paths
+        run: |
+          ~/.composer/vendor/bin/phpcs --config-set installed_paths \
+            ~/.composer/vendor/wp-coding-standards/wpcs,\
+            ~/.composer/vendor/phpcompatibility/php-compatibility
+
+      - name: Run PHPCS (WordPress standards)
+        run: |
+          ~/.composer/vendor/bin/phpcs \
+            --standard=WordPress,WordPress-Extra,WordPress-Docs \
+            --extensions=php \
+            --ignore=vendor,node_modules,.github \
+            .
+
+      - name: Run PHPCompatibility (WordPress supported PHP)
+        run: |
+          ~/.composer/vendor/bin/phpcs \
+            --standard=PHPCompatibilityWP \
+            --runtime-set testVersion 7.4-8.3 \
+            --extensions=php \
+            --ignore=vendor,node_modules,.github \
+            .
+
