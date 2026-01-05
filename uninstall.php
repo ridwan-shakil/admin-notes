@@ -27,7 +27,7 @@ $plugmint_notes = get_posts(
 );
 
 if ( $plugmint_notes ) {
-	foreach ( $plugmint_notes as $plugmint_note_id ) {
-		wp_delete_post( $note_id, true );
+	foreach ( $plugmint_notes as $plugmint_notes_note_id ) {
+		wp_delete_post( $plugmint_notes_note_id, true );
 	}
 }
