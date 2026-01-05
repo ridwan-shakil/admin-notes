@@ -1,5 +1,4 @@
 <?php
-
 /**
  * AJAX handlers for Admin Notes.
  *
@@ -10,6 +9,7 @@
  * @since 1.0.0
  * @author MD.Ridwan <ridwansweb@email.com>
  */
+
 namespace Draggable_notes\Admin;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -30,9 +30,6 @@ class Admin_Notes_Ajax {
 	 * @return void
 	 */
 	public function init() {
-
-		error_log( 'AJAX class initialized' ); //testing line
-
 		add_action( 'wp_ajax_admin_notes_add', array( $this, 'ajax_add_note' ) );
 		add_action( 'wp_ajax_admin_notes_delete', array( $this, 'ajax_delete_note' ) );
 		add_action( 'wp_ajax_admin_notes_save_title', array( $this, 'ajax_save_title' ) );
@@ -43,7 +40,7 @@ class Admin_Notes_Ajax {
 		add_action( 'wp_ajax_admin_notes_save_visibility', array( $this, 'ajax_save_visibility' ) );
 	}
 
-	
+
 
 	/**
 	 * Creates a new note (Custom Post Type post).
