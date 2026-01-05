@@ -175,8 +175,8 @@ class Admin_Notes_Admin {
 	/**
 	 * Determine whether a user can view a given note.
 	 *
-	 * @param int     $user_id
-	 * @param wp_post $post
+	 * @param int     $user_id User ID.
+	 * @param WP_Post $post Note Post object.
 	 * @return bool
 	 */
 	protected function current_user_can_view_note( $user_id, $post ) {
