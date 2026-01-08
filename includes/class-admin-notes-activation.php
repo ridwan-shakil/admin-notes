@@ -5,7 +5,7 @@
  * This file is responsible for setting up initial options,
  * managing the post-activation redirect, and adding the settings link.
  *
- * @package draggable-notes
+ * @package plugmint-draggable-notes
  * @since 1.0.0
  * @author MD.Ridwan <ridwansweb@email.com>
  */
@@ -75,7 +75,7 @@ class Admin_Notes_Activation {
 		$link = sprintf(
 			'<a href="%s" style="color:#2271b1">%s</a>',
 			admin_url( 'admin.php?page=admin-notes' ),
-			__( 'Settings', 'draggable-notes' )
+			__( 'Settings', 'plugmint-draggable-notes' )
 		);
 
 		array_push( $links, $link );

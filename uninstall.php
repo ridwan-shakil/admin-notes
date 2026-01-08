@@ -4,7 +4,7 @@
  *
  * Deletes the Custom Post Type, all associated posts, and post meta.
  *
- * @package draggable-notes
+ * @package plugmint-draggable-notes
  * @since 1.0.0
  * @author MD.Ridwan <ridwansweb@email.com>
  */

@@ -2,7 +2,7 @@
 /**
  * Register the admin_note CPT.
  *
- * @package draggable-notes
+ * @package plugmint-draggable-notes
  * @since 1.0.0
  * @author MD.Ridwan <ridwansweb@email.com>
  */
@@ -34,18 +34,18 @@ class Admin_Notes_CPT {
 	 */
 	public function register_cpt() {
 		$labels = array(
-			'name'               => __( 'Admin Notes', 'draggable-notes' ),
-			'singular_name'      => __( 'Admin Note', 'draggable-notes' ),
-			'add_new'            => __( 'Add Note', 'draggable-notes' ),
-			'add_new_item'       => __( 'Add New Note', 'draggable-notes' ),
-			'edit_item'          => __( 'Edit Note', 'draggable-notes' ),
-			'new_item'           => __( 'New Note', 'draggable-notes' ),
-			'all_items'          => __( 'All Notes', 'draggable-notes' ),
-			'view_item'          => __( 'View Note', 'draggable-notes' ),
-			'search_items'       => __( 'Search Notes', 'draggable-notes' ),
-			'not_found'          => __( 'No notes found', 'draggable-notes' ),
-			'not_found_in_trash' => __( 'No notes found in Trash', 'draggable-notes' ),
-			'menu_name'          => __( 'Admin Notes', 'draggable-notes' ),
+			'name'               => __( 'Admin Notes', 'plugmint-draggable-notes' ),
+			'singular_name'      => __( 'Admin Note', 'plugmint-draggable-notes' ),
+			'add_new'            => __( 'Add Note', 'plugmint-draggable-notes' ),
+			'add_new_item'       => __( 'Add New Note', 'plugmint-draggable-notes' ),
+			'edit_item'          => __( 'Edit Note', 'plugmint-draggable-notes' ),
+			'new_item'           => __( 'New Note', 'plugmint-draggable-notes' ),
+			'all_items'          => __( 'All Notes', 'plugmint-draggable-notes' ),
+			'view_item'          => __( 'View Note', 'plugmint-draggable-notes' ),
+			'search_items'       => __( 'Search Notes', 'plugmint-draggable-notes' ),
+			'not_found'          => __( 'No notes found', 'plugmint-draggable-notes' ),
+			'not_found_in_trash' => __( 'No notes found in Trash', 'plugmint-draggable-notes' ),
+			'menu_name'          => __( 'Admin Notes', 'plugmint-draggable-notes' ),
 		);
 
 		$args = array(

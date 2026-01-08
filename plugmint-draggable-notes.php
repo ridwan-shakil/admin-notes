@@ -5,12 +5,12 @@
  * Version:           1.0.0
  * Author:            MD.Ridwan
  * Author URI:        https://github.com/ridwan-shakil
- * Text Domain:       draggable-notes
+ * Text Domain:       plugmint-draggable-notes
  * Domain Path:       /languages
  * License:           GPLv2 or later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
  *
- * @package draggable-notes
+ * @package plugmint-draggable-notes
  */
 
 if ( ! defined( 'ABSPATH' ) ) {

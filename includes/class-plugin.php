@@ -3,7 +3,7 @@
  * Main Plugin Singleton.
  *
  * @since 1.0.0
- * @package draggable-notes
+ * @package plugmint-draggable-notes
  */
 
 namespace Draggable_Notes\Admin;
