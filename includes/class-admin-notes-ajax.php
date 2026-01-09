@@ -30,14 +30,14 @@ class Admin_Notes_Ajax {
 	 * @return void
 	 */
 	public function init() {
-		add_action( 'wp_ajax_admin_notes_add', array( $this, 'ajax_add_note' ) );
-		add_action( 'wp_ajax_admin_notes_delete', array( $this, 'ajax_delete_note' ) );
-		add_action( 'wp_ajax_admin_notes_save_title', array( $this, 'ajax_save_title' ) );
-		add_action( 'wp_ajax_admin_notes_save_checklist', array( $this, 'ajax_save_checklist' ) );
-		add_action( 'wp_ajax_admin_notes_save_color', array( $this, 'ajax_save_color' ) );
-		add_action( 'wp_ajax_admin_notes_toggle_minimize', array( $this, 'ajax_toggle_minimize' ) );
-		add_action( 'wp_ajax_admin_notes_save_order', array( $this, 'ajax_save_order' ) );
-		add_action( 'wp_ajax_admin_notes_save_visibility', array( $this, 'ajax_save_visibility' ) );
+		add_action( 'wp_ajax_pdan_admin_notes_add', array( $this, 'ajax_add_note' ) );
+		add_action( 'wp_ajax_pdan_admin_notes_delete', array( $this, 'ajax_delete_note' ) );
+		add_action( 'wp_ajax_pdan_admin_notes_save_title', array( $this, 'ajax_save_title' ) );
+		add_action( 'wp_ajax_pdan_admin_notes_save_checklist', array( $this, 'ajax_save_checklist' ) );
+		add_action( 'wp_ajax_pdan_admin_notes_save_color', array( $this, 'ajax_save_color' ) );
+		add_action( 'wp_ajax_pdan_admin_notes_toggle_minimize', array( $this, 'ajax_toggle_minimize' ) );
+		add_action( 'wp_ajax_pdan_admin_notes_save_order', array( $this, 'ajax_save_order' ) );
+		add_action( 'wp_ajax_pdan_admin_notes_save_visibility', array( $this, 'ajax_save_visibility' ) );
 	}
 
 
