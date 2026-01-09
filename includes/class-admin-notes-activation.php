@@ -29,7 +29,7 @@ class Admin_Notes_Activation {
 	 */
 	public function run_activation() {
 		// Redirect on next page load.
-		add_option( 'admin_notes_do_activation_redirect', true );
+		add_option( 'pdan_admin_notes_do_activation_redirect', true );
 	}
 
 	/**
@@ -57,8 +57,8 @@ class Admin_Notes_Activation {
 			return;
 		}
 
-		if ( get_option( 'admin_notes_do_activation_redirect', false ) ) {
-			delete_option( 'admin_notes_do_activation_redirect' );
+		if ( get_option( 'pdan_admin_notes_do_activation_redirect', false ) ) {
+			delete_option( 'pdan_admin_notes_do_activation_redirect' );
 
 			wp_safe_redirect( admin_url( 'admin.php?page=pdan-admin-notes' ) );
 			exit;
