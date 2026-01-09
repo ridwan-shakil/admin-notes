@@ -42,7 +42,7 @@ class Admin_Notes_Assets {
 		if ( 'toplevel_page_admin-notes' === $hook ) {
 			// CSS.
 			wp_enqueue_style(
-				'admin-notes-style',
+				'pdan-notes-style',
 				PDAN_NOTES_URL . 'assets/css/admin-notes.css',
 				array(),
 				PDAN_NOTES_VERSION
@@ -54,7 +54,7 @@ class Admin_Notes_Assets {
 			);
 			// Main jQuery file.
 			wp_enqueue_script(
-				'admin-notes-script',
+				'pdan-notes-script',
 				PDAN_NOTES_URL . 'assets/js/admin-notes.js',
 				array( 'jquery', 'jquery-ui-sortable' ),
 				PDAN_NOTES_VERSION,
@@ -62,7 +62,7 @@ class Admin_Notes_Assets {
 			);
 			// Pass AJAX and localization variables to the script.
 			wp_localize_script(
-				'admin-notes-script',
+				'pdan-notes-script',
 				'AdminNotes',
 				array(
 					'ajax_url' => admin_url( 'admin-ajax.php' ),
