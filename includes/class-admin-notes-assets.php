@@ -63,7 +63,7 @@ class Admin_Notes_Assets {
 			// Pass AJAX and localization variables to the script.
 			wp_localize_script(
 				'pdan-notes-script',
-				'AdminNotes',
+				'pdanAdminNotes',
 				array(
 					'ajax_url' => admin_url( 'admin-ajax.php' ),
 					'nonce'    => wp_create_nonce( 'admin_notes_nonce' ),

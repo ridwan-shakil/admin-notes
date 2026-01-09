@@ -4,7 +4,7 @@ jQuery(function ($) {
 	// -----------------------------
 	function postAjax(data, callback) {
 		$.post(
-			AdminNotes.ajax_url,
+			pdanAdminNotes.ajax_url,
 			data,
 			function (response) {
 				if (typeof callback === "function") {
@@ -25,7 +25,7 @@ jQuery(function ($) {
 		postAjax(
 			{
 				action: "admin_notes_add",
-				nonce: AdminNotes.nonce,
+				nonce: pdanAdminNotes.nonce,
 			},
 			function (res) {
 				// if fails → show error
@@ -194,7 +194,7 @@ jQuery(function ($) {
 			postAjax({
 				action: "admin_notes_save_title",
 				note_id: noteID,
-				nonce: AdminNotes.nonce,
+				nonce: pdanAdminNotes.nonce,
 				title: newVal,
 			});
 
@@ -213,7 +213,7 @@ jQuery(function ($) {
 			postAjax(
 				{
 					action: "admin_notes_delete",
-					nonce: AdminNotes.nonce,
+					nonce: pdanAdminNotes.nonce,
 					note_id: noteID,
 				},
 				function (res) {
@@ -239,7 +239,7 @@ jQuery(function ($) {
 				action: "admin_notes_toggle_minimize",
 				note_id: noteID,
 				state: isClosed ? 1 : 0,
-				nonce: AdminNotes.nonce,
+				nonce: pdanAdminNotes.nonce,
 			});
 		});
 
@@ -303,7 +303,7 @@ jQuery(function ($) {
 				action: "admin_notes_save_color",
 				note_id: noteID,
 				color,
-				nonce: AdminNotes.nonce,
+				nonce: pdanAdminNotes.nonce,
 			});
 		});
 
@@ -321,7 +321,7 @@ jQuery(function ($) {
 				action: "admin_notes_save_color",
 				note_id: noteID,
 				color,
-				nonce: AdminNotes.nonce,
+				nonce: pdanAdminNotes.nonce,
 			});
 		});
 
@@ -335,7 +335,7 @@ jQuery(function ($) {
 				action: "admin_notes_save_visibility",
 				note_id: noteID,
 				visibility,
-				nonce: AdminNotes.nonce,
+				nonce: pdanAdminNotes.nonce,
 			});
 		});
 	}
@@ -403,7 +403,7 @@ jQuery(function ($) {
 
 		postAjax({
 			action: "admin_notes_save_checklist",
-			nonce: AdminNotes.nonce,
+			nonce: pdanAdminNotes.nonce,
 			note_id: noteID,
 			checklist: JSON.stringify(data),
 		});
@@ -436,7 +436,7 @@ jQuery(function ($) {
 
 		postAjax({
 			action: "admin_notes_save_order",
-			nonce: AdminNotes.nonce,
+			nonce: pdanAdminNotes.nonce,
 			order: JSON.stringify(order),
 		});
 	}
