@@ -43,9 +43,9 @@ class Admin_Notes_Assets {
 			// CSS.
 			wp_enqueue_style(
 				'admin-notes-style',
-				PLUGMINT_NOTES_URL . 'assets/css/admin-notes.css',
+				PDAN_NOTES_URL . 'assets/css/admin-notes.css',
 				array(),
-				PLUGMINT_NOTES_VERSION
+				PDAN_NOTES_VERSION
 			);
 
 			// Enqueue jQuery UI Sortable dependency.
@@ -55,9 +55,9 @@ class Admin_Notes_Assets {
 			// Main jQuery file.
 			wp_enqueue_script(
 				'admin-notes-script',
-				PLUGMINT_NOTES_URL . 'assets/js/admin-notes.js',
+				PDAN_NOTES_URL . 'assets/js/admin-notes.js',
 				array( 'jquery', 'jquery-ui-sortable' ),
-				PLUGMINT_NOTES_VERSION,
+				PDAN_NOTES_VERSION,
 				true
 			);
 			// Pass AJAX and localization variables to the script.

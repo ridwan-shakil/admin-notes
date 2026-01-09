@@ -43,7 +43,7 @@ class Admin_Notes_Activation {
 
 		// Add settings link.
 		add_filter(
-			'plugin_action_links_' . plugin_basename( PLUGMINT_NOTES_FILE ),
+			'plugin_action_links_' . plugin_basename( PDAN_NOTES_FILE ),
 			array( $this, 'add_settings_link' )
 		);
 	}

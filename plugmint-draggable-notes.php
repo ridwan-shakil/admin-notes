@@ -18,19 +18,19 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 // Plugin constants.
-define( 'PLUGMINT_NOTES_VERSION', '1.0.0' );
-define( 'PLUGMINT_NOTES_PATH', plugin_dir_path( __FILE__ ) );
-define( 'PLUGMINT_NOTES_URL', plugin_dir_url( __FILE__ ) );
-define( 'PLUGMINT_NOTES_FILE', __FILE__ );
+define( 'PDAN_NOTES_VERSION', '1.0.0' );
+define( 'PDAN_NOTES_PATH', plugin_dir_path( __FILE__ ) );
+define( 'PDAN_NOTES_URL', plugin_dir_url( __FILE__ ) );
+define( 'PDAN_NOTES_FILE', __FILE__ );
 
 // Include required core files.
-require_once PLUGMINT_NOTES_PATH . 'includes/class-plugin.php';
-require_once PLUGMINT_NOTES_PATH . 'includes/class-loader.php';
-require_once PLUGMINT_NOTES_PATH . 'includes/class-admin-notes-activation.php';
-require_once PLUGMINT_NOTES_PATH . 'includes/class-admin-notes-cpt.php';
-require_once PLUGMINT_NOTES_PATH . 'includes/class-admin-notes-admin.php';
-require_once PLUGMINT_NOTES_PATH . 'includes/class-admin-notes-assets.php';
-require_once PLUGMINT_NOTES_PATH . 'includes/class-admin-notes-ajax.php';
+require_once PDAN_NOTES_PATH . 'includes/class-plugin.php';
+require_once PDAN_NOTES_PATH . 'includes/class-loader.php';
+require_once PDAN_NOTES_PATH . 'includes/class-admin-notes-activation.php';
+require_once PDAN_NOTES_PATH . 'includes/class-admin-notes-cpt.php';
+require_once PDAN_NOTES_PATH . 'includes/class-admin-notes-admin.php';
+require_once PDAN_NOTES_PATH . 'includes/class-admin-notes-assets.php';
+require_once PDAN_NOTES_PATH . 'includes/class-admin-notes-ajax.php';
 
 /**
  * Runs on plugin activation.
